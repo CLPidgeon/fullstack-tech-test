@@ -35,7 +35,7 @@ export default function Metrics() {
     getLatestMetrics();
     const interval = setInterval(() => {
       getLatestMetrics();
-    }, 300000);
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
