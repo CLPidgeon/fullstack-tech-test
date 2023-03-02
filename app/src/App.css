@@ -1,0 +1,38 @@
+.container {
+  background-color: #202020;
+  color: white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+h1 {
+  text-align: center;
+}
+
+.time,
+.metrics {
+  width: 49%;
+  padding: 10px;
+}
+
+.stopwatch--container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.stopwatch--digits {
+  text-align: center;
+  width: 25%;
+  border: 2px solid #50b79b;
+}
+
+.metrics {
+  background-color: #50b79b;
+}
+
+.metrics--container {
+  overflow-wrap: break-word;
+}
