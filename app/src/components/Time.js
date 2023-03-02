@@ -4,11 +4,11 @@ import { getServerTime } from "../functions/time";
 
 export default function Time() {
   // Loading boolean to display loading screen or not
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // Holding and setting the server time from /time endpoint
   const [serverTime, setServerTime] = useState();
   // The current time
-  const [time, setTime] = useState(new Date().toString());
+  const [time, setTime] = useState(new Date());
   // The difference between current time and server time
   const [difference, setDifference] = useState([]);
   const [error, setError] = useState();
