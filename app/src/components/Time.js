@@ -13,10 +13,10 @@ export default function Time() {
   const [difference, setDifference] = useState([]);
   const [error, setError] = useState();
 
-  // Async call to the getServerTime function. Loading set for loading screen if any delay
-  const getLatestServerTime = async () => {
+  // Call to the getServerTime function. Loading set for loading screen if any delay
+  const getLatestServerTime = () => {
     setLoading(true);
-    await getServerTime()
+    getServerTime()
       .then((res) => {
         setError(null);
         setServerTime(res.data.epoch);
@@ -25,32 +25,44 @@ export default function Time() {
         if (err.response.status === 403) {
           setError("You need to be authorized to use this API");
         } else {
-          setError(err);
+          setError(err.response.statusText);
         }
       });
     // Can check the loading is working by commenting out this line
     setLoading(false);
   };
 
-  // Checking time difference ever second
+  const getTimeDifference = () => {
+    setTime(Math.round(Date.now()) / 1000);
+    let newDifference = time - serverTime;
+    console.log(newDifference);
+    let hours = ("0" + Math.floor(newDifference / 360)).slice(-2);
+    let minutes = ("0" + Math.floor(newDifference / 60)).slice(-2);
+    if (minutes >= 60) {
+      minutes = ("0" + (minutes - 60)).slice(-2);
+    }
+    let seconds = ("0" + Math.floor(newDifference)).slice(-2);
+    if (seconds >= 60) {
+      seconds = ("0" + (seconds - 60)).slice(-2);
+    }
+    setDifference([hours, minutes, seconds]);
+  };
+
+  // Checking time difference every second
   useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setTime(new Date());
-      let newDifference = time - serverTime;
-      let hours = "0" + Math.round(newDifference / 360000);
-      let minutes = "0" + Math.round(newDifference / 60000);
-      let seconds = ("0" + Math.ceil(newDifference / 1000)).slice(-2);
-      setDifference([hours, minutes, seconds]);
+    getTimeDifference();
+    const interval = setInterval(() => {
+      getTimeDifference();
     }, 1000);
-    return () => clearInterval(timeInterval);
+    return () => clearInterval(interval);
   });
 
-  // Getting the epoch time on first render then every 30 seconds
+  // Getting the epoch time in seconds on first render then every 30 seconds
   useEffect(() => {
     getLatestServerTime();
     const interval = setInterval(() => {
       getLatestServerTime();
-    }, 30000);
+    }, 3690000);
     return () => clearInterval(interval);
   }, []);
 
@@ -67,9 +79,20 @@ export default function Time() {
               <h1>Time</h1>
               <p>Server time: {serverTime}</p>
               <div className="stopwatch--container">
-                <div className="stopwatch--digits">{difference[0]}</div>
-                <div className="stopwatch--digits">{difference[1]}</div>
-                <div className="stopwatch--digits">{difference[2]}</div>
+                <div className="stopwatch--digits">
+                  {difference[0]}
+                  <br />
+                  Hours
+                </div>
+                <div className="stopwatch--digits">
+                  {difference[1]}
+                  <br />
+                  Minutes
+                </div>
+                <div className="stopwatch--digits">
+                  {difference[2]}
+                  <br /> Seconds
+                </div>
               </div>
             </>
           )}

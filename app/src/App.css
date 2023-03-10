@@ -27,6 +27,7 @@ h1 {
   text-align: center;
   width: 25%;
   border: 2px solid #50b79b;
+  padding: 5px;
 }
 
 .metrics {

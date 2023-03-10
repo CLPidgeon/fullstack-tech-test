@@ -33,8 +33,16 @@ You have npm and node installed
 
 [Node docs](https://nodejs.org/en/#home-downloadhead)
 
+## Improvements
+
+- Error handling, error message now displayed
+- Hours / minutes / seconds added to timer
+- Bug fix for over 60 second & 60 minute counter
+- Epoch now in seconds not milliseconds
+
 ## Future Improvements
 
-- Testing
-- Adding hours / minutes / seconds to the counter
-- Styling the metrics to be more user friendly
+- Automated testing
+- Clean up of superfluous code
+- Async / then fix
+- Checking for vars and converting to const or let
