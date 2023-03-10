@@ -32,37 +32,30 @@ export default function Time() {
     setLoading(false);
   };
 
-  const getTimeDifference = () => {
-    setTime(Math.round(Date.now()) / 1000);
-    let newDifference = time - serverTime;
-    console.log(newDifference);
-    let hours = ("0" + Math.floor(newDifference / 360)).slice(-2);
-    let minutes = ("0" + Math.floor(newDifference / 60)).slice(-2);
-    if (minutes >= 60) {
-      minutes = ("0" + (minutes - 60)).slice(-2);
-    }
-    let seconds = ("0" + Math.floor(newDifference)).slice(-2);
-    if (seconds >= 60) {
-      seconds = ("0" + (seconds - 60)).slice(-2);
-    }
-    setDifference([hours, minutes, seconds]);
-  };
-
   // Checking time difference every second
   useEffect(() => {
-    getTimeDifference();
+    const getTimeDifference = () => {
+      setTime(Math.round(Date.now()) / 1000);
+      let newDifference = Math.floor(time - serverTime);
+      //let newDifference = 3900;
+      console.log(newDifference);
+      let hours = ("0" + Math.floor(newDifference / 3600)).slice(-2);
+      let minutes = ("0" + (Math.floor(newDifference / 60) % 60)).slice(-2);
+      let seconds = ("0" + (newDifference % 60)).slice(-2);
+      setDifference([hours, minutes, seconds]);
+    };
     const interval = setInterval(() => {
       getTimeDifference();
     }, 1000);
     return () => clearInterval(interval);
-  });
+  }, [serverTime, setDifference, time]);
 
   // Getting the epoch time in seconds on first render then every 30 seconds
   useEffect(() => {
     getLatestServerTime();
     const interval = setInterval(() => {
       getLatestServerTime();
-    }, 3690000);
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
